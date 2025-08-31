@@ -7,42 +7,75 @@ import os
 import subprocess
 from datetime import timedelta
 import datetime
-from video_to_audio import convertation
-from video_shorting import *
+from video_to_audio import convertation,get_time
+from video_shorting import short_maker,casino,short_maker_blackpad
+from downloader import get_short,get_audio,all_formats
 
-# vid_dir=os.listdir('videos')
-# list_of_videos=[i for i in vid_dir if 'mp4' in i]
-# list_of_audios=[f"{i.split('.')[0]}.m4a" for i in list_of_videos]
+def get_short_from_yotube(url:str,timecodes:list)-> None:
+    """
+    Скачивает шортсы c YouTube по заданным временным кодам.
 
-name='ИГРОПОЛИУС2025.webm'
-# timecodes=[[1861.92, 2025.37],[878.38, 976.82],[5700.42, 5978.98],[1420.86, 1529.74],[1204.57, 1292.39],[1861.92, 2025.37],[692.74, 744.78],
-#            [1695.66, 1725.47],[1857.92, 1941.85],[1204.57, 1333.29],[1080.1, 1200.68],[1420.86, 1559.72]]
+    Args:
+        url (str): URL видео на YouTube.
+        timecodes (List[List[float, float]]): Список временных кодов, где каждый код
+            — список из двух элементов [start, end] в секундах (int) или формате времени (str).
+    """
+    for timecode in timecodes:
+        print(*timecode)
+        new_name='-'.join([str(i) for i in timecode]).replace(':','_')
+        get_short(url,*timecode,f"videos/{new_name}_short.mp4")
 
-timecodes=[882, 976.82+12.5]
-timecodes=[timecodes]
+name='ИГРОПОЛИУС_Мафия.webm'
 
-timecodes=[[str(timedelta(seconds=int(i))).zfill(8) for i in timecode] for timecode in timecodes]
+timecodes=[
+#  [4309.15+80, 4524.139999999999-50],
+ [8711.56-1, 8748.16+6.5],
+
+ ]
+
+
+print(timecodes)
+
+# timecodes=[[str(timedelta(seconds=int(i))).zfill(8) for i in timecode] for timecode in timecodes]
 # print(timecodes)
 
-#mp4 to wav
-convertation(name,name.replace('webm','wav'),number_of_chapters=5)
+# получаю аудио с ютуба
+get_audio('https://youtu.be/fIsuSYd-B8w')
 
-#делаю шортсы
+# из видео/аудио получаю нормированный wav аудио файл
+# convertation(name,name.replace('mp4','wav').replace('webm','wav'),number_of_chapters=8) #оптимизировать чтобы работало не 3 часа
+# print(get_time(name))
+
+# делаю шортсы
 # for timecode in timecodes:
 #     print(*timecode)
-#     short_maker(*timecode,name,f"videos/{'_'.join(timecode).replace(':','_')}_short.mp4")
+#     short_maker(*timecode,name,f"videos/{'_'.join([str(int(i)) for i in timecode]).replace(':','_')}_short.mp4")
 
-# обрезаю вебку
+####обрезаю вебку
 # all_shorts=[_ for _ in os.listdir('videos') if "short" in _]
 # for i in all_shorts:
-#     new_name=i.replace('short','black')
-#     casino(f'videos/{i}',f'videos/{new_name}',1080) 
+#     new_name=i.replace('short','webcam')
+    # casino(f'videos/{i}',f'videos/{new_name}',1080) 
 
 #делаю горизонтальные шортсы 
-# all_shorts=[_ for _ in os.listdir('videos') if "short" in _]
+# all_shorts=[_ for _ in os.listdir('videos') if "full" in _]
 # for i in all_shorts:
-#     new_name=i.replace('short','black')
+#     new_name=i.replace('full','black')
 #     short_maker_blackpad(f'videos/{i}',f'videos/{new_name}')
 
-# short_maker_blackpad(*timecodes,name,f'videos/{datetime.datetime.now().strftime("%d_%m___%H_%M_%S")}_short_.mp4')
-# casino('smuta.mp4','smuta1.mp4') 
+
+# url='https://youtu.be/yJgnSqmYdiw'
+# get_short_from_yotube(url,timecodes)
+
+# print(get_time('ИГРОПОЛИУС_мафия.webm'))
+
+# # вырезаю шортсы с ютуба
+# url='https://youtu.be/yBp16urXQoA'
+# # url='https://youtu.be/HJni6k2-2pQ'
+# # all_formats(url)
+# for timecode in timecodes:
+#     # print(*timecode)
+#     new_name='-'.join([str(i) for i in timecode]).replace(':','_').replace('.','_')
+#     get_short(url,*timecode,f"videos/{new_name}_short.mp4")
+
+# get_short(url,* [581.59, 810.54],f"videos/{'asdasdasdasd'}_short.mp4")

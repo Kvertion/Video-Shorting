@@ -1,7 +1,27 @@
 import subprocess
 import os
+from datetime import timedelta
 
-def casino(input_name,output_name,resolution=720):  #обрезает вокруг вебки
+def cleaning(func):
+    def wrapper(*args,**kwargs):
+        # if str(args[0:2]).count('[[')==0: 
+        timer=[]
+        timer.append([args[0:2]])
+        timer.extend(args[2:])
+            # args=timer
+        a=timer[0]
+        if str(a[0]).count(':')==0:
+            timer[0:2]=[[str(timedelta(seconds=int(i))).zfill(8) for i in timecode] for timecode in a]
+            print(timer[0:2])
+        args=timer
+        result=func(*args,**kwargs)
+        return result
+    return wrapper
+
+def casino(input_name,output_name,resolution=720):  
+    '''
+    обрезает вокруг вебки
+    '''
     x=200 #отступ справа
     y=160 #отступ сверху
     x1080={720:1,1080:1920/1280}[resolution]
@@ -16,14 +36,20 @@ def casino(input_name,output_name,resolution=720):  #обрезает вокру
     ]
     subprocess.run(cmd, check=True)
 
-def short_maker(start,end,input_name,output_name):#обрезает видео
+# @cleaning
+def short_maker(start,end,input_name,output_name):
+    '''
+    обрезает видео
+    '''
     cmd = [
         "ffmpeg",
         "-y",
-        "-ss", start,      # начало
-        "-to", end,      # конец
-        "-i", input_name,
-        "-c", "copy",
+        "-ss", str(timedelta(seconds=int(start))).zfill(8),      # начало
+        "-i", input_name, #mp4
+        "-t", str(float(end) - float(start)),
+        "-c:v", "copy",
+        "-c:a", "copy",
+        '-copyinkf',
         output_name
     ]
     subprocess.run(cmd, check=True)
@@ -77,5 +103,3 @@ def append_video(video1, video2, output_name):
     ]
     subprocess.run(cmd, check=True)
     print(f"Видео склеено: {output_name}")
-
-# append_video(*['videos/00_20_00_00_20_21_short.mp4','videos/00_21_00_00_23_13_short.mp4'],'slotic.mp4')
