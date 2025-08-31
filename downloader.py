@@ -64,9 +64,9 @@ def get_kick(url,start,end,out,video_quality='bestvideo'):
     with yt_dlp.YoutubeDL(ytdl_options) as video:
         video.download([url])
 
-# get_kick('https://kick.com/maddyson/videos/48cbd65c-20d4-4881-abf5-59ca0ca09df5', 4000, 4100, 'kick_attempt12')
+# get_kick('', 4000, 4100, 'kick_attempt12')
 
-base_url='https://kick.com/maddyson/videos/48cbd65c-20d4-4881-abf5-59ca0ca09df5'
+base_url=''
 get_audio(base_url)
 # all_formats(base_url)
 # get_short(base_url, "04:15", "05:15")

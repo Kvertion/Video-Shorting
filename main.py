@@ -25,7 +25,7 @@ def get_short_from_yotube(url:str,timecodes:list)-> None:
         new_name='-'.join([str(i) for i in timecode]).replace(':','_')
         get_short(url,*timecode,f"videos/{new_name}_short.mp4")
 
-name='ИГРОПОЛИУС_Мафия.webm'
+name='.webm'
 
 timecodes=[
 #  [4309.15+80, 4524.139999999999-50],
@@ -64,14 +64,13 @@ get_audio('https://youtu.be/fIsuSYd-B8w')
 #     short_maker_blackpad(f'videos/{i}',f'videos/{new_name}')
 
 
-# url='https://youtu.be/yJgnSqmYdiw'
+# url=''
 # get_short_from_yotube(url,timecodes)
 
 # print(get_time('ИГРОПОЛИУС_мафия.webm'))
 
 # # вырезаю шортсы с ютуба
-# url='https://youtu.be/yBp16urXQoA'
-# # url='https://youtu.be/HJni6k2-2pQ'
+# url=''
 # # all_formats(url)
 # for timecode in timecodes:
 #     # print(*timecode)
